@@ -1,8 +1,17 @@
+//Connect
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+
+//Image
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+
+//File and Streams
+import java.io.File;
+import java.io.ByteArrayOutputStream;
+
+//Exceptions
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -10,7 +19,6 @@ import java.net.UnknownHostException;
 class UDPcliente {
 
     private DatagramSocket cliente;
-    private BufferedReader entrada = new BufferedReader(new InputStreamReader(System.in));
     private byte[] sendbuffer;
     private InetAddress address;
 	
@@ -30,9 +38,14 @@ class UDPcliente {
 	    }
 	}
 
-	public void sendFile(String msg) throws IOException {
-	    sendbuffer = msg.getBytes();
+    public void sendFile(String image, String ext) throws IOException {
+	    BufferedImage img = ImageIO.read(new File(image + "." + ext));
+	    ByteArrayOutputStream imgstream = new ByteArrayOutputStream();
+	    ImageIO.write(img, ext,imgstream);
+	    imgstream.flush();
+	    sendbuffer = imgstream.toByteArray();
 	    DatagramPacket enviar = new DatagramPacket(sendbuffer, sendbuffer.length, address, 4444);
+	    System.out.println(sendbuffer.length);
 	    cliente.send(enviar);
 	}
 
