@@ -38,10 +38,10 @@ class UDPcliente {
 	    }
 	}
 
-    public void sendFile(String image, String ext) throws IOException {
-	    BufferedImage img = ImageIO.read(new File(image + "." + ext));
+    public void sendFile(File image) throws IOException {
+	    BufferedImage img = ImageIO.read(image);
 	    ByteArrayOutputStream imgstream = new ByteArrayOutputStream();
-	    ImageIO.write(img, ext,imgstream);
+	    ImageIO.write(img, "jpg",imgstream);
 	    imgstream.flush();
 	    sendbuffer = imgstream.toByteArray();
 	    DatagramPacket enviar = new DatagramPacket(sendbuffer, sendbuffer.length, address, 4444);
