@@ -10,6 +10,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.ByteArrayInputStream;
 
+//JFrames
+import javax.swing.JFrame;
+
+
 //Exception
 import java.net.SocketException;
 import java.net.InetAddress;
@@ -20,7 +24,8 @@ class UDPserver extends Thread {
     private DatagramSocket servidor;
     private boolean running;
     private byte[] recbuffer = new byte[8192];
-
+    public serverGUI gui = new serverGUI();
+    
     public UDPserver() {
 	try {
 	    servidor = new DatagramSocket(4444);
@@ -41,8 +46,10 @@ class UDPserver extends Thread {
 		ByteArrayInputStream imgstream = new ByteArrayInputStream(buff);
 		BufferedImage bimage = ImageIO.read(imgstream);
 		ImageIO.write(bimage, "jpg", new File("received.jpg"));
-		//teoricamente criou o arquivo recebido :)
-		//é só mostrar o arquivo criado
+		//teoricamente criou o arquivo recebido (para fins de teste)
+
+		//mostrando o arquivo criado:
+		gui.show_image(bimage);
 		
 		InetAddress endereco = pacote.getAddress();
 		int port = pacote.getPort();
